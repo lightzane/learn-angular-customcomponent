@@ -1,0 +1,109 @@
+<div class="flex">
+  <!-- c1 -->
+  <div style="min-width: 350px;">
+    <my-listbox
+      header="Custom Component 1"
+      [options]="fruits"
+      optionLabel="name"
+    ></my-listbox>
+    <pre>{{ c1 }}</pre>
+  </div>
+
+  <!-- c2 -->
+  <div>
+    <my-listbox
+      header="Custom Component 2"
+      [options]="fruits"
+      optionLabel="name"
+    >
+      <ng-template let-item let-i="index" myTemplate="item">
+        Fruit {{ i }}: {{ item }}
+      </ng-template>
+
+      <ng-template myTemplate="header">
+        <span
+          style="
+            background-color: #00ca4e;
+            border-radius: 50%;
+            width: 10px;
+            height: 10px;
+            display: inline-block;
+            margin-right: 0.2em;
+          "
+        ></span>
+        <span>Header inside ng-template</span>
+      </ng-template>
+
+      <!--
+        Below line has disadvantage
+        AND custom component will not be able to provide default content 
+        AND Div element (see listbox.component.html) may always display even if no content
+      -->
+      <!-- <div my-listbox-footer><strong>ng-content</strong> with <strong>select</strong></div> -->
+    </my-listbox>
+    <pre>{{ c2 }}</pre>
+  </div>
+
+  <!-- c3 -->
+  <div>
+    <my-listbox
+      header="Custom Component 3"
+      [options]="fruits"
+      optionLabel="name"
+      [itemTemplate]="templateNotChildOfListbox"
+    ></my-listbox>
+    <pre>{{ c3 }}</pre>
+    <ng-template #templateNotChildOfListbox let-item let-i="index">
+      {{ item }} === {{ i }}
+    </ng-template>
+  </div>
+
+  <!-- c4 -->
+  <div style="min-width: 350px;">
+    <my-listbox
+      header="Custom Component 4"
+      [options]="[]"
+    ></my-listbox>
+    <pre>{{ c4 }}</pre>
+  </div>
+
+  <!-- c5 -->
+  <div style="min-width: 350px;">
+    <my-listbox
+      header="Custom Component 5"
+      emptyMessage="No Items here"
+      optionLabel="name"
+    ></my-listbox>
+    <pre>{{ c5 }}</pre>
+  </div>
+</div>
+
+<!-- Sample on how to use ng-template with ng-container -->
+
+<h2>Examples using ng-templates</h2>
+
+<ng-template #sampleTemplate1 let-name let-message="message">
+  <div>
+    The name: {{ name }} and the message: {{ message }}
+  </div>
+</ng-template>
+
+<ng-template #sampleTemplate2 let-obj>
+  <div>Hi {{ obj.name }}! {{ obj.message }} </div>
+</ng-template>
+
+<h3>Sample 2</h3>
+
+<ng-container 
+  *ngTemplateOutlet="
+    sampleTemplate1; 
+    context: { $implicit: 'Jane', message: 'Kazhicho?' }
+"></ng-container>
+
+<h3>Sample 3</h3>
+<ng-container
+  *ngTemplateOutlet="
+    sampleTemplate2;
+    context: { $implicit: { name: 'Jane', message: 'Namukk kazhikkum' } }
+  "
+></ng-container>

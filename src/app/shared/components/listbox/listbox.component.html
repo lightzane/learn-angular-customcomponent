@@ -1,0 +1,36 @@
+<div class="my-listbox">
+
+    <h1 class="my-listbox-header">
+        <ng-container *ngIf="!headerTemplate">
+            {{ header }}
+        </ng-container>
+        <ng-container *ngTemplateOutlet="headerTemplate"></ng-container>
+    </h1>
+
+    <div class="my-listbox-items-wrapper">
+        <ul class="my-listbox-item-list">
+
+            <ng-container *ngIf="!options?.length">
+                <li class="my-listbox-item my-listbox-empty-message">
+                    {{ emptyMessage }}
+                </li>
+            </ng-container>
+            
+            <ng-template ngFor let-option [ngForOf]="options" let-i="index">
+
+                <li class="my-listbox-item">
+                    <span *ngIf="!itemTemplate">{{ getOptionLabel(option) }}</span>
+                    <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: getOptionLabel(option), index: i }"></ng-container>
+                </li>
+
+            </ng-template>
+    
+        </ul>
+    </div>
+
+    <!-- Custom component won't be able to provide default value and the Div element will always display even if no values -->
+    <!-- <div class="my-listbox-footer"> -->
+        <ng-content select="[my-listbox-footer]"></ng-content>
+    <!-- </div> -->
+
+</div>
